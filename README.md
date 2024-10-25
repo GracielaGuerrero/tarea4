@@ -13,23 +13,31 @@ Desarrollo:
 1.	Configuración Inicial del Entorno
 a)	Abrir Visual Studio Code y navega a la carpeta:
 Abrimos el terminal en Visual Studio Code y navegamos al directorio donde trabajaremos, en este caso: cd C:\Users\graci\Desktop\docker
+
 b)	Crear un archivo Dockerfile con el siguiente contenido:
 En Visual Studio Code, en el explorador de archivos, hacemos clic derecho en la carpeta y seleccionamos "Nuevo archivo". Lo nombramos Dockerfile y agregamos el siguiente texto: 
 FROM nginx:latest
 RUN echo '<h1>Hola Mundo, este es la tarea 4 de Rosa Graciela Guerrero</h1>' > /usr/share/nginx/html/index.html
-2.	Crear la Imagen de Docker y Subirla a Docker Hub
+
+3.	Crear la Imagen de Docker y Subirla a Docker Hub
+
 a)	Construimos la Imagen de Docker
 En el terminal en Visual Studio Code, escribimos
 docker build -t rgguerrero/tarea4 .
+
 b)	Iniciar Sesión en Docker Hub
 Iniciamos sesión en Docker Hub para poder subir la imagen:
 docker login
+
 c)	Subir la Imagen a Docker Hub
 Una vez que hayamos iniciado sesión, subimos la imagen creada:
 docker push rgguerrero/tarea4
-3.	Crear Archivos de Despliegue en Kubernetes
+
+4.	Crear Archivos de Despliegue en Kubernetes
+
 a)	Crear el archivo de despliegue deployment.yaml:
 En Visual Studio Code, creamos un archivo llamado deployment.yaml en el directorio y agregamos las siguientes líneas de código:
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -49,19 +57,22 @@ spec:
         image: rgguerrero/tarea4
         ports:
         - containerPort: 80
+
 b)	Aplicar el Despliegue en Kubernetes
 Aplicamos el despliegue con kubectl:
 kubectl apply -f deployment.yaml
 Verificamos el Estado del Despliegue
 kubectl get deployments
  
-4.	Exponer el Servicio con Istio
+5.	Exponer el Servicio con Istio
+
 a)	Habilitar la Inyección Automática de Istio (si aún no está activa)
 Activamos la inyección en el namespace por defecto:
 kubectl label namespace default istio-injection=enabled
  
-b)	Crear el archivo istio-service.yaml para definir el Servicio y Gateway:
+b) Crear el archivo istio-service.yaml para definir el Servicio y Gateway:
 En Visual Studio Code, creamos un archivo llamado istio-service.yaml y añadimos:
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -112,8 +123,10 @@ kubectl apply -f istio-service.yaml
 
 5.	Habilitar Observabilidad en Istio
 Utilizamos los siguientes comandos para abrir los dashboards de observabilidad:
+
 a)	Para monitorear datos en Grafana:
 istioctl dashboard grafana
+
 Si se tuviese algún problema con istio, se debe corroborar lo siguiente:
 •	Descargarse el instalador istioctl.exe
 Verificamos el directorio donde se extrajo istio (e.j., C:\istio\bin).
@@ -130,8 +143,6 @@ Una vez que istio es accesible, comprobamos en powershell el comando para abrir 
 	istioctl dashboard grafana
  
  
- 
-
 b)	Para ver el tráfico de servicio en Kiali
 Para ver el tráfico del servicio, podemos usar Kiali, con el siguiente comando en powershell:
 istioctl dashboard kiali
