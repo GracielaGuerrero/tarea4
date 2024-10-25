@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tarea4-service
+spec:
+  selector:
+    app: tarea4
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: tarea4-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: tarea4
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - tarea4-gateway
+  http:
+    - route:
+        - destination:
+            host: tarea4-service
+            port:
+              number: 80

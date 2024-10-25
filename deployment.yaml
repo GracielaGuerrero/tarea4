@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tarea4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tarea4
+  template:
+    metadata:
+      labels:
+        app: tarea4
+    spec:
+      containers:
+      - name: tarea4
+        image: rgguerrero/tarea4
+        ports:
+        - containerPort: 80
